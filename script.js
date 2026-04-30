@@ -75,68 +75,50 @@ function displayLyric(lyric) {
     updateBackgroundFromImage(albumCover);
 }
 
-// Extract dominant color from image and update background
+// Extract dominant colors from image and update background blobs
+const colorThief = new ColorThief();
+
 function updateBackgroundFromImage(imgElement) {
-    imgElement.onload = function() {
-        try {
-            const canvas = document.createElement('canvas');
-            canvas.width = imgElement.naturalWidth || imgElement.width || 100;
-            canvas.height = imgElement.naturalHeight || imgElement.height || 100;
-            
-            const ctx = canvas.getContext('2d', { willReadFrequently: true });
-            if (!ctx) return;
-            
-            ctx.drawImage(imgElement, 0, 0);
-
-            // Get image data
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imageData.data;
-
-            // Calculate average color
-            let r = 0, g = 0, b = 0;
-            const pixelCount = data.length / 4;
-
-            for (let i = 0; i < data.length; i += 4) {
-                r += data[i];
-                g += data[i + 1];
-                b += data[i + 2];
-            }
-
-            r = Math.floor(r / pixelCount);
-            g = Math.floor(g / pixelCount);
-            b = Math.floor(b / pixelCount);
-
-            // Update CSS variables
-            const root = document.documentElement;
-            root.style.setProperty('--primary-color', `${r}, ${g}, ${b}`);
-            root.style.setProperty('--primary-hex', `rgb(${r}, ${g}, ${b})`);
-
-            // Create darker and lighter versions for gradient
-            const darkR = Math.floor(r * 0.5);
-            const darkG = Math.floor(g * 0.5);
-            const darkB = Math.floor(b * 0.5);
-
-            const lighterR = Math.floor(r * 0.25);
-            const lighterG = Math.floor(g * 0.25);
-            const lighterB = Math.floor(b * 0.25);
-
-            // Update body background with gradient
-            document.body.style.background = `linear-gradient(135deg, rgb(${lighterR}, ${lighterG}, ${lighterB}) 0%, rgb(${darkR}, ${darkG}, ${darkB}) 100%)`;
-
-            console.log(`Updated background colors: RGB(${r}, ${g}, ${b})`);
-        } catch (error) {
-            console.log('Could not extract image colors, using default background');
-        }
-    };
-    
-    imgElement.onerror = function() {
-        console.error('Failed to load album cover image:', imgElement.src);
-    };
-
-    // Trigger onload if image is already cached
     if (imgElement.complete) {
-        imgElement.onload();
+        processImage(imgElement);
+    } else {
+        imgElement.onload = function() {
+            processImage(imgElement);
+        };
     }
+}
+
+function processImage(imgElement) {
+    try {
+        // Extract a palette of 5 colors
+        const palette = colorThief.getPalette(imgElement, 5);
+        const blobs = document.querySelectorAll('.blob');
+        
+        palette.forEach((color, index) => {
+            if (blobs[index]) {
+                const rgb = color.join(', ');
+                blobs[index].style.setProperty('--blob-color', rgb);
+                blobs[index].style.background = `rgba(${rgb}, 0.6)`;
+            }
+        });
+
+        // Also update primary color for other UI elements
+        const dominant = palette[0].join(', ');
+        document.documentElement.style.setProperty('--primary-color', dominant);
+        
+        console.log('Background blobs updated with new palette');
+    } catch (error) {
+        console.error('Error extracting palette:', error);
+    }
+}
+
+// Reset the background to default
+function resetBackground() {
+    const blobs = document.querySelectorAll('.blob');
+    blobs.forEach(blob => {
+        blob.style.background = 'rgba(255, 255, 255, 0.1)';
+    });
+    document.documentElement.style.setProperty('--primary-color', '57, 169, 203');
 }
 
 // Reset the display
@@ -147,4 +129,5 @@ function resetDisplay() {
     document.getElementById('albumCover').src = '';
     document.getElementById('lyricsProgress').style.width = '0%';
     currentLyric = null;
+    resetBackground();
 }
