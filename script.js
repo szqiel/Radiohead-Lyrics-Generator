@@ -146,7 +146,7 @@ function resetBackground() {
 // Reset the display
 function resetDisplay() {
     document.getElementById('lyricsText').textContent = 'Click generate to get a random lyric line...';
-    document.getElementById('songName').textContent = 'Select a lyric';
+    document.getElementById('songName').textContent = 'Generate a lyric...';
     document.getElementById('albumName').textContent = 'Radiohead';
     document.getElementById('albumCover').src = '';
     document.getElementById('lyricsProgress').style.width = '0%';
