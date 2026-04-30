@@ -252,7 +252,7 @@ body {
     height: 100%;
     background: #fff;
     width: 0%;
-    transition: width 0.3s ease;
+    transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border-radius: 2px;
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }

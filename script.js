@@ -82,9 +82,9 @@ function displayLyric(lyric) {
         albumCover.src = lyric.cover;
         albumCover.alt = `${lyric.album} - ${lyric.song}`;
 
-        // Update progress bar
-        const progress = Math.min((lyric.text.length / 150) * 100, 100);
-        progressBar.style.width = progress + '%';
+        // Update progress bar with a simulated song position (10% to 90%)
+        const simulatedPosition = Math.floor(Math.random() * 81) + 10;
+        progressBar.style.width = simulatedPosition + '%';
 
         // Update background
         updateBackgroundFromImage(albumCover);
