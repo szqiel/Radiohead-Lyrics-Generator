@@ -53,71 +53,93 @@ function generateRandomLyric() {
     displayLyric(currentLyric);
 }
 
-// Display the lyric on the page
+// Display the lyric on the page with a smooth cross-fade transition
 function displayLyric(lyric) {
     const lyricsText = document.getElementById('lyricsText');
     const songName = document.getElementById('songName');
     const albumName = document.getElementById('albumName');
     const albumCover = document.getElementById('albumCover');
     const progressBar = document.getElementById('lyricsProgress');
+    const songInfo = document.querySelector('.song-info-container');
 
-    lyricsText.textContent = `"${lyric.text}"`;
-    songName.textContent = lyric.song;
-    albumName.textContent = lyric.album;
-    albumCover.src = lyric.cover;
-    albumCover.alt = `${lyric.album} - ${lyric.song}`;
+    // Create an array of elements to animate
+    const animatedElements = [lyricsText, songInfo, albumCover];
 
-    // Update progress bar based on lyrics length
-    const progress = Math.min((lyric.text.length / 150) * 100, 100);
-    progressBar.style.width = progress + '%';
+    // Step 1: Add fade-out class to current content
+    animatedElements.forEach(el => {
+        el.classList.remove('fade-in');
+        el.classList.add('fade-out');
+    });
 
-    // Update background with album cover colors
-    updateBackgroundFromImage(albumCover);
-}
-
-// Extract dominant colors from image and update background blobs
-const colorThief = new ColorThief();
-
-function updateBackgroundFromImage(imgElement) {
-    if (imgElement.complete) {
-        processImage(imgElement);
-    } else {
-        imgElement.onload = function() {
-            processImage(imgElement);
-        };
-    }
-}
-
-function processImage(imgElement) {
-    try {
-        // Extract a palette of 5 colors
-        const palette = colorThief.getPalette(imgElement, 5);
-        const blobs = document.querySelectorAll('.blob');
+    // Step 2: Wait for fade-out to complete (400ms) then update content
+    setTimeout(() => {
+        // Update text content
+        lyricsText.textContent = `"${lyric.text}"`;
+        songName.textContent = lyric.song;
+        albumName.textContent = lyric.album;
         
-        palette.forEach((color, index) => {
-            if (blobs[index]) {
-                const rgb = color.join(', ');
-                blobs[index].style.setProperty('--blob-color', rgb);
-                blobs[index].style.background = `rgba(${rgb}, 0.6)`;
-            }
+        // Update image
+        albumCover.src = lyric.cover;
+        albumCover.alt = `${lyric.album} - ${lyric.song}`;
+
+        // Update progress bar
+        const progress = Math.min((lyric.text.length / 150) * 100, 100);
+        progressBar.style.width = progress + '%';
+
+        // Update background
+        updateBackgroundFromImage(albumCover);
+
+        // Step 3: Remove fade-out and add fade-in class
+        animatedElements.forEach(el => {
+            el.classList.remove('fade-out');
+            el.classList.add('fade-in');
         });
+    }, 400);
+}
 
-        // Also update primary color for other UI elements
-        const dominant = palette[0].join(', ');
-        document.documentElement.style.setProperty('--primary-color', dominant);
-        
-        console.log('Background blobs updated with new palette');
-    } catch (error) {
-        console.error('Error extracting palette:', error);
-    }
+let activeLayer = 1;
+
+// Update background using a two-layer cross-fade system to prevent blinking
+function updateBackgroundFromImage(imgElement) {
+    if (!imgElement.src || imgElement.src.includes('undefined')) return;
+
+    const layer1 = document.querySelector('.layer-1');
+    const layer2 = document.querySelector('.layer-2');
+    const nextLayer = activeLayer === 1 ? layer2 : layer1;
+    const currentLayer = activeLayer === 1 ? layer1 : layer2;
+
+    // 1. Set the new cover to the inactive layer
+    nextLayer.style.setProperty('--album-cover', `url("${imgElement.src}")`);
+    
+    // 2. Cross-fade: Activate the next, Deactivate the current
+    nextLayer.classList.add('active');
+    currentLayer.classList.remove('active');
+
+    // 3. Update state
+    activeLayer = activeLayer === 1 ? 2 : 1;
+
+    console.log(`Background cross-faded to layer ${activeLayer}`);
+}
+
+function fallbackColors() {
+    const blobs = document.querySelectorAll('.blob');
+    const colors = ['255, 0, 0', '0, 255, 0', '0, 0, 255', '255, 255, 0', '255, 0, 255'];
+    blobs.forEach((blob, i) => {
+        blob.style.background = `rgba(${colors[i]}, 0.3)`;
+        blob.style.opacity = '0.5';
+    });
 }
 
 // Reset the background to default
 function resetBackground() {
-    const blobs = document.querySelectorAll('.blob');
-    blobs.forEach(blob => {
-        blob.style.background = 'rgba(255, 255, 255, 0.1)';
-    });
+    const layer1 = document.querySelector('.layer-1');
+    const layer2 = document.querySelector('.layer-2');
+    
+    layer1.classList.remove('active');
+    layer2.classList.remove('active');
+    layer1.classList.add('active'); // Reset to layer 1
+    activeLayer = 1;
+    
     document.documentElement.style.setProperty('--primary-color', '57, 169, 203');
 }
 
