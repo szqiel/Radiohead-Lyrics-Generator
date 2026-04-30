@@ -1,1 +1,1 @@
-﻿Emang pengen depresi deh?
+# ﻿Emang pengen depresi deh?
