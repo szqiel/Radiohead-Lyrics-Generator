@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radiohead Lyrics Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="player-container">
+        <div class="player">
+            <!-- Album Cover -->
+            <div class="album-cover-container">
+                <img id="albumCover" src="" alt="Album Cover" class="album-cover">
+            </div>
+
+            <!-- Song Info -->
+            <div class="song-info-container">
+                <p id="songName" class="song-name">Select a lyric</p>
+                <p id="albumName" class="album-name">Radiohead</p>
+            </div>
+
+            <!-- Lyrics Display -->
+            <div class="lyrics-display">
+                <p id="lyricsText" class="lyrics-text">Click generate to get a random lyric line...</p>
+            </div>
+
+            <!-- Progress Bar (for lyrics length visualization) -->
+            <div class="progress-bar">
+                <div id="lyricsProgress" class="progress-fill"></div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <button id="generateBtn" class="control-btn generate-btn">
+                    <span class="btn-icon">⟳</span>
+                    <span class="btn-text">GENERATE</span>
+                </button>
+                <button id="resetBtn" class="control-btn reset-btn">
+                    <span class="btn-icon">⏹</span>
+                    <span class="btn-text">RESET</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="lyrics.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
