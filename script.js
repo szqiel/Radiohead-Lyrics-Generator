@@ -6,6 +6,12 @@ let currentLyric = null;
 document.addEventListener('DOMContentLoaded', () => {
     loadLyrics();
     
+    // Initialize background with default image
+    const albumCover = document.getElementById('albumCover');
+    if (albumCover && albumCover.src) {
+        updateBackgroundFromImage(albumCover);
+    }
+    
     // Add event listeners
     document.getElementById('generateBtn').addEventListener('click', generateRandomLyric);
     document.getElementById('resetBtn').addEventListener('click', resetDisplay);
@@ -34,6 +40,10 @@ function generateRandomLyric() {
         document.getElementById('lyricsText').textContent = 'No lyrics data available.';
         return;
     }
+
+    // Remove landing state if it exists
+    const player = document.querySelector('.player');
+    if (player) player.classList.remove('is-landing');
 
     // Pick a random song
     const randomSong = allLyrics[Math.floor(Math.random() * allLyrics.length)];
@@ -143,13 +153,24 @@ function resetBackground() {
     document.documentElement.style.setProperty('--primary-color', '57, 169, 203');
 }
 
-// Reset the display
+// Reset the display to landing page state
 function resetDisplay() {
-    document.getElementById('lyricsText').textContent = 'Click generate to get a random lyric line...';
-    document.getElementById('songName').textContent = 'Generate a lyric...';
-    document.getElementById('albumName').textContent = 'Radiohead';
-    document.getElementById('albumCover').src = '';
-    document.getElementById('lyricsProgress').style.width = '0%';
+    const lyricsText = document.getElementById('lyricsText');
+    const songName = document.getElementById('songName');
+    const albumName = document.getElementById('albumName');
+    const albumCover = document.getElementById('albumCover');
+    const progressBar = document.getElementById('lyricsProgress');
+
+    // Restore landing page content
+    lyricsText.textContent = 'Press generate to make your life more depressing';
+    songName.textContent = 'Generate a Lyric...';
+    albumName.textContent = 'RADIOHEAD';
+    albumCover.src = 'assets/Radiohead.png';
+    albumCover.alt = 'Radiohead';
+    progressBar.style.width = '0%';
+    
     currentLyric = null;
-    resetBackground();
+    
+    // Update background using the default image
+    updateBackgroundFromImage(albumCover);
 }
