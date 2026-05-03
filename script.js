@@ -1,6 +1,7 @@
 // Initialize the application
 let allLyrics = [];
 let currentLyric = null;
+let lastLyricText = null;
 
 // Load lyrics data on page load
 document.addEventListener('DOMContentLoaded', () => {
@@ -45,11 +46,19 @@ function generateRandomLyric() {
     const player = document.querySelector('.player');
     if (player) player.classList.remove('is-landing');
 
-    // Pick a random song
-    const randomSong = allLyrics[Math.floor(Math.random() * allLyrics.length)];
+    let randomSong, randomLine;
     
-    // Pick a random line from that song
-    const randomLine = randomSong.lines[Math.floor(Math.random() * randomSong.lines.length)];
+    // Ensure we don't get the same lyric twice in a row
+    const totalLines = allLyrics.reduce((acc, song) => acc + song.lines.length, 0);
+    
+    do {
+        // Pick a random song
+        randomSong = allLyrics[Math.floor(Math.random() * allLyrics.length)];
+        // Pick a random line from that song
+        randomLine = randomSong.lines[Math.floor(Math.random() * randomSong.lines.length)];
+    } while (totalLines > 1 && randomLine === lastLyricText);
+
+    lastLyricText = randomLine;
     
     // Store current lyric
     currentLyric = {
