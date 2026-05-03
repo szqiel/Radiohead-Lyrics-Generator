@@ -400,8 +400,7 @@ body {
     }
 
     .generate-btn { 
-        width: 70px; 
-        height: 70px; 
+        /* Match standard control-btn size */
     }
 }
 
