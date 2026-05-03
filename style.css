@@ -353,11 +353,56 @@ body {
 
 @media (max-width: 480px) {
     .player {
-        padding: 24px;
+        padding: 20px;
+        max-width: 340px;
     }
-    .song-name { font-size: 1.2rem; }
-    .control-btn { width: 65px; height: 65px; }
-    .generate-btn { width: 75px; height: 75px; }
+    
+    .album-cover-container {
+        width: 180px;
+        height: 180px;
+        margin: 0 auto 20px auto;
+    }
+
+    .song-name { 
+        font-size: 1.1rem; 
+    }
+    
+    .album-name {
+        font-size: 0.8rem;
+    }
+
+    .lyrics-display {
+        padding: 15px;
+        min-height: 100px;
+        margin-bottom: 20px;
+    }
+
+    .lyrics-text {
+        font-size: 0.95rem;
+    }
+
+    .progress-bar {
+        margin-bottom: 20px;
+    }
+
+    .control-btn { 
+        width: 60px; 
+        height: 60px; 
+    }
+    
+    .btn-icon {
+        width: 22px;
+        height: 22px;
+    }
+
+    .btn-text {
+        font-size: 0.5rem;
+    }
+
+    .generate-btn { 
+        width: 70px; 
+        height: 70px; 
+    }
 }
 
 .generate-btn:active {
