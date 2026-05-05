@@ -1,6 +1,5 @@
 // Initialize the application
 let allLyrics = [];
-let currentLyric = null;
 let lastLyricText = null;
 
 // Load lyrics data on page load
@@ -60,16 +59,13 @@ function generateRandomLyric() {
 
     lastLyricText = randomLine;
     
-    // Store current lyric
-    currentLyric = {
+    // Display the lyric
+    displayLyric({
         text: randomLine,
         song: randomSong.song,
         album: randomSong.album,
         cover: randomSong.cover
-    };
-
-    // Display the lyric
-    displayLyric(currentLyric);
+    });
 }
 
 // Display the lyric on the page with a smooth cross-fade transition
@@ -140,28 +136,6 @@ function updateBackgroundFromImage(imgElement) {
     console.log(`Background cross-faded to layer ${activeLayer}`);
 }
 
-function fallbackColors() {
-    const blobs = document.querySelectorAll('.blob');
-    const colors = ['255, 0, 0', '0, 255, 0', '0, 0, 255', '255, 255, 0', '255, 0, 255'];
-    blobs.forEach((blob, i) => {
-        blob.style.background = `rgba(${colors[i]}, 0.3)`;
-        blob.style.opacity = '0.5';
-    });
-}
-
-// Reset the background to default
-function resetBackground() {
-    const layer1 = document.querySelector('.layer-1');
-    const layer2 = document.querySelector('.layer-2');
-    
-    layer1.classList.remove('active');
-    layer2.classList.remove('active');
-    layer1.classList.add('active');
-    activeLayer = 1;
-    
-    document.documentElement.style.setProperty('--primary-color', '57, 169, 203');
-}
-
 // Reset the display to landing page state
 function resetDisplay() {
     const lyricsText = document.getElementById('lyricsText');
@@ -177,8 +151,6 @@ function resetDisplay() {
     albumCover.src = 'assets/Radiohead.png';
     albumCover.alt = 'Radiohead';
     progressBar.style.width = '0%';
-    
-    currentLyric = null;
     
     // Update background using the default image
     updateBackgroundFromImage(albumCover);
