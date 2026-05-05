@@ -84,13 +84,13 @@ function displayLyric(lyric) {
     // Create an array of elements to animate
     const animatedElements = [lyricsText, songInfo, albumCover];
 
-    // Step 1: Add fade-out class to current content
+    // Add fade-out class to current content
     animatedElements.forEach(el => {
         el.classList.remove('fade-in');
         el.classList.add('fade-out');
     });
 
-    // Step 2: Wait for fade-out to complete (400ms) then update content
+    // Wait for fade-out to complete (400ms) then update content
     setTimeout(() => {
         // Update text content
         lyricsText.textContent = `"${lyric.text}"`;
@@ -108,7 +108,7 @@ function displayLyric(lyric) {
         // Update background
         updateBackgroundFromImage(albumCover);
 
-        // Step 3: Remove fade-out and add fade-in class
+        // Remove fade-out and add fade-in class
         animatedElements.forEach(el => {
             el.classList.remove('fade-out');
             el.classList.add('fade-in');
@@ -127,14 +127,14 @@ function updateBackgroundFromImage(imgElement) {
     const nextLayer = activeLayer === 1 ? layer2 : layer1;
     const currentLayer = activeLayer === 1 ? layer1 : layer2;
 
-    // 1. Set the new cover to the inactive layer
+    // Set the new cover to the inactive layer
     nextLayer.style.setProperty('--album-cover', `url("${imgElement.src}")`);
     
-    // 2. Cross-fade: Activate the next, Deactivate the current
+    // Cross-fade: Activate the next, Deactivate the current
     nextLayer.classList.add('active');
     currentLayer.classList.remove('active');
 
-    // 3. Update state
+    // Update state
     activeLayer = activeLayer === 1 ? 2 : 1;
 
     console.log(`Background cross-faded to layer ${activeLayer}`);
@@ -156,7 +156,7 @@ function resetBackground() {
     
     layer1.classList.remove('active');
     layer2.classList.remove('active');
-    layer1.classList.add('active'); // Reset to layer 1
+    layer1.classList.add('active');
     activeLayer = 1;
     
     document.documentElement.style.setProperty('--primary-color', '57, 169, 203');

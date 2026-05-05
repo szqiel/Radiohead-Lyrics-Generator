@@ -48,6 +48,31 @@ const RADIOHEAD_LYRICS = {
         "I don't care if it hurts",
         "I want you to notice when I'm not around",
       ]
+    },
+    {
+      "song": "There, There",
+      "album": "Hail To The Thief",
+      "cover": "assets/albums/Hail To The Thief.png",
+      "lines": [
+        "Just 'cause you feel it doesn't mean it's there",
+        "We'd be a walking disaster",
+        "Why so green and lonely, and lonely, and lonely?",
+        "Heaven sent you to me, to me, to me",
+        "We are accidents waiting, waiting to happen",
+      ]
+    },
+    {
+      "song": "How to Disappear Completely",
+      "album": "Kid A",
+      "cover": "assets/albums/Kid A.png",
+      "lines": [
+        "That there, that's not me",
+        "I go where I please",
+        "I'm not here this isn't happening",
+        "The moment's already passed yeah, it's gone",
+        "I'm not here I'm not here",
+        "In a little while, I'll be gone",
+      ]
     }
   ]
 };
